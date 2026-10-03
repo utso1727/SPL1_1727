@@ -36,32 +36,65 @@ public class Main {
 
 
 
-        Statistics stats = new Statistics();
+        Statistics statistics = new Statistics();
 
-
-
-        System.out.println(
-                "Average GPA: "
-                        + df.format(stats.calculateMeanGPA(students))
-        );
-
+        System.out.println();
+        System.out.println("STATISTICAL ANALYSIS");
+        System.out.println("------------------------------");
 
         System.out.println(
-                "Average Attendance: "
-                        + df.format(stats.calculateMeanAttendance(students))
+                "Total Students: "
+                        + students.size()
         );
-
 
         System.out.println(
-                "GPA Standard Deviation: "
-                        + df.format(stats.standardDeviationGPA(students))
+                "Dropout Students: "
+                        + statistics.countDropoutStudents(students)
         );
 
+        System.out.println(
+                "Non-Dropout Students: "
+                        + statistics.countNonDropoutStudents(students)
+        );
 
+        System.out.println();
 
-        System.out.println("\nComparison:");
+        System.out.println(
+                "Average Previous Qualification Grade: "
+                        + statistics.calculateMeanPreviousQualificationGrade(students)
+        );
 
-        stats.dropoutComparison(students);
+        System.out.println(
+                "Average Admission Grade: "
+                        + statistics.calculateMeanAdmissionGrade(students)
+        );
+
+        System.out.println(
+                "Average 1st Semester Grade: "
+                        + statistics.calculateMeanFirstSemesterGrade(students)
+        );
+
+        System.out.println(
+                "Average 2nd Semester Grade: "
+                        + statistics.calculateMeanSecondSemesterGrade(students)
+        );
+
+        System.out.println();
+
+        System.out.println(
+                "1st Semester Grade Standard Deviation: "
+                        + statistics.standardDeviationFirstSemesterGrade(students)
+        );
+
+        System.out.println(
+                "2nd Semester Grade Standard Deviation: "
+                        + statistics.standardDeviationSecondSemesterGrade(students)
+        );
+
+        System.out.println();
+
+        System.out.println("Comparison:");
+        statistics.dropoutComparison(students);
 
 
 

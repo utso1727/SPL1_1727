@@ -3,51 +3,148 @@ package model;
 public class Student {
 
     private int id;
-    private int age;
-    private double attendance;
-    private double gpa;
-    private int failedCourses;
-    private int studyHours;
-    private int tuitionStatus;
-    private int scholarship;
-    private int financialDifficulty;
+
+    private double previousQualificationGrade;
+    private double admissionGrade;
+
+    private int debtor;
+    private int tuitionFeesUpToDate;
+    private int scholarshipHolder;
+
+    private int ageAtEnrollment;
+
+    private int firstSemEnrolled;
+    private int firstSemEvaluations;
+    private int firstSemApproved;
+    private double firstSemGrade;
+
+    private int secondSemEnrolled;
+    private int secondSemEvaluations;
+    private int secondSemApproved;
+    private double secondSemGrade;
+
     private int dropout;
 
 
-    public Student(int id, int age, double attendance, double gpa,
-                   int failedCourses, int studyHours,
-                   int tuitionStatus, int scholarship,
-                   int financialDifficulty, int dropout) {
+    public Student(
+            int id,
+            double previousQualificationGrade,
+            double admissionGrade,
+            int debtor,
+            int tuitionFeesUpToDate,
+            int scholarshipHolder,
+            int ageAtEnrollment,
+            int firstSemEnrolled,
+            int firstSemEvaluations,
+            int firstSemApproved,
+            double firstSemGrade,
+            int secondSemEnrolled,
+            int secondSemEvaluations,
+            int secondSemApproved,
+            double secondSemGrade,
+            int dropout) {
 
         this.id = id;
-        this.age = age;
-        this.attendance = attendance;
-        this.gpa = gpa;
-        this.failedCourses = failedCourses;
-        this.studyHours = studyHours;
-        this.tuitionStatus = tuitionStatus;
-        this.scholarship = scholarship;
-        this.financialDifficulty = financialDifficulty;
+
+        this.previousQualificationGrade = previousQualificationGrade;
+        this.admissionGrade = admissionGrade;
+
+        this.debtor = debtor;
+        this.tuitionFeesUpToDate = tuitionFeesUpToDate;
+        this.scholarshipHolder = scholarshipHolder;
+
+        this.ageAtEnrollment = ageAtEnrollment;
+
+        this.firstSemEnrolled = firstSemEnrolled;
+        this.firstSemEvaluations = firstSemEvaluations;
+        this.firstSemApproved = firstSemApproved;
+        this.firstSemGrade = firstSemGrade;
+
+        this.secondSemEnrolled = secondSemEnrolled;
+        this.secondSemEvaluations = secondSemEvaluations;
+        this.secondSemApproved = secondSemApproved;
+        this.secondSemGrade = secondSemGrade;
+
         this.dropout = dropout;
     }
 
 
-    public double getAttendance() {
-        return attendance;
+    public int getId() {
+        return id;
     }
 
 
-    public double getGpa() {
-        return gpa;
+    public double getPreviousQualificationGrade() {
+        return previousQualificationGrade;
+    }
+
+
+    public double getAdmissionGrade() {
+        return admissionGrade;
+    }
+
+
+    public int getDebtor() {
+        return debtor;
+    }
+
+
+    public int getTuitionFeesUpToDate() {
+        return tuitionFeesUpToDate;
+    }
+
+
+    public int getScholarshipHolder() {
+        return scholarshipHolder;
+    }
+
+
+    public int getAgeAtEnrollment() {
+        return ageAtEnrollment;
+    }
+
+
+    public int getFirstSemEnrolled() {
+        return firstSemEnrolled;
+    }
+
+
+    public int getFirstSemEvaluations() {
+        return firstSemEvaluations;
+    }
+
+
+    public int getFirstSemApproved() {
+        return firstSemApproved;
+    }
+
+
+    public double getFirstSemGrade() {
+        return firstSemGrade;
+    }
+
+
+    public int getSecondSemEnrolled() {
+        return secondSemEnrolled;
+    }
+
+
+    public int getSecondSemEvaluations() {
+        return secondSemEvaluations;
+    }
+
+
+    public int getSecondSemApproved() {
+        return secondSemApproved;
+    }
+
+
+    public double getSecondSemGrade() {
+        return secondSemGrade;
     }
 
 
     public int getDropout() {
         return dropout;
-    }
-
-
-    public int getFailedCourses() {
-        return failedCourses;
     }
 }

@@ -1,112 +1,216 @@
 package statistics;
-import java.text.DecimalFormat;
-
 
 import model.Student;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-
 public class Statistics {
-    static DecimalFormat df = new DecimalFormat("0.00");
+
+    private static final DecimalFormat df =
+            new DecimalFormat("0.00");
 
 
-    public double calculateMeanGPA(ArrayList<Student> students){
+    // Average previous qualification grade
+    public double calculateMeanPreviousQualificationGrade(
+            ArrayList<Student> students) {
+
+        if (students.isEmpty()) {
+            return 0;
+        }
 
         double sum = 0;
 
-
-        for(Student s: students){
-
-            sum += s.getGpa();
-
+        for (Student s : students) {
+            sum += s.getPreviousQualificationGrade();
         }
-
 
         return sum / students.size();
-
     }
 
 
+    // Average admission grade
+    public double calculateMeanAdmissionGrade(
+            ArrayList<Student> students) {
 
-    public double calculateMeanAttendance(ArrayList<Student> students){
+        if (students.isEmpty()) {
+            return 0;
+        }
 
         double sum = 0;
 
-
-        for(Student s: students){
-
-            sum += s.getAttendance();
-
+        for (Student s : students) {
+            sum += s.getAdmissionGrade();
         }
-
 
         return sum / students.size();
-
     }
 
 
+    // Average first semester grade
+    public double calculateMeanFirstSemesterGrade(
+            ArrayList<Student> students) {
 
-    public double standardDeviationGPA(ArrayList<Student> students){
-
-
-        double mean = calculateMeanGPA(students);
+        if (students.isEmpty()) {
+            return 0;
+        }
 
         double sum = 0;
 
-
-        for(Student s: students){
-
-            sum += Math.pow(s.getGpa()-mean,2);
-
+        for (Student s : students) {
+            sum += s.getFirstSemGrade();
         }
 
-
-        return Math.sqrt(sum/students.size());
-
+        return sum / students.size();
     }
 
 
+    // Average second semester grade
+    public double calculateMeanSecondSemesterGrade(
+            ArrayList<Student> students) {
 
-    public void dropoutComparison(ArrayList<Student> students){
+        if (students.isEmpty()) {
+            return 0;
+        }
+
+        double sum = 0;
+
+        for (Student s : students) {
+            sum += s.getSecondSemGrade();
+        }
+
+        return sum / students.size();
+    }
 
 
-        double dropoutGPA = 0;
-        double normalGPA = 0;
+    // Standard deviation of first semester grade
+    public double standardDeviationFirstSemesterGrade(
+            ArrayList<Student> students) {
+
+        if (students.isEmpty()) {
+            return 0;
+        }
+
+        double mean =
+                calculateMeanFirstSemesterGrade(students);
+
+        double sum = 0;
+
+        for (Student s : students) {
+
+            sum += Math.pow(
+                    s.getFirstSemGrade() - mean,
+                    2
+            );
+        }
+
+        return Math.sqrt(sum / students.size());
+    }
+
+
+    // Standard deviation of second semester grade
+    public double standardDeviationSecondSemesterGrade(
+            ArrayList<Student> students) {
+
+        if (students.isEmpty()) {
+            return 0;
+        }
+
+        double mean =
+                calculateMeanSecondSemesterGrade(students);
+
+        double sum = 0;
+
+        for (Student s : students) {
+
+            sum += Math.pow(
+                    s.getSecondSemGrade() - mean,
+                    2
+            );
+        }
+
+        return Math.sqrt(sum / students.size());
+    }
+
+
+    // Count dropout students
+    public int countDropoutStudents(
+            ArrayList<Student> students) {
+
+        int count = 0;
+
+        for (Student s : students) {
+
+            if (s.getDropout() == 1) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+
+    // Count non-dropout students
+    public int countNonDropoutStudents(
+            ArrayList<Student> students) {
+
+        int count = 0;
+
+        for (Student s : students) {
+
+            if (s.getDropout() == 0) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+
+    // Compare dropout and non-dropout students
+    // using first semester grade
+    public void dropoutComparison(
+            ArrayList<Student> students) {
+
+        double dropoutGrade = 0;
+        double nonDropoutGrade = 0;
 
         int dropoutCount = 0;
-        int normalCount = 0;
+        int nonDropoutCount = 0;
 
 
+        for (Student s : students) {
 
-        for(Student s: students){
+            if (s.getDropout() == 1) {
 
+                dropoutGrade +=
+                        s.getFirstSemGrade();
 
-            if(s.getDropout()==1){
-
-                dropoutGPA += s.getGpa();
                 dropoutCount++;
 
+            } else {
+
+                nonDropoutGrade +=
+                        s.getFirstSemGrade();
+
+                nonDropoutCount++;
             }
-
-            else{
-
-                normalGPA += s.getGpa();
-                normalCount++;
-
-            }
-
         }
 
 
-        System.out.println("Dropout Student Average GPA: "
-                + df.format(dropoutGPA/dropoutCount));
+        System.out.println(
+                "Dropout Student Average 1st Semester Grade: "
+                        + df.format(
+                        dropoutGrade / dropoutCount
+                )
+        );
 
 
-        System.out.println("Non-Dropout Student Average GPA: "
-                + df.format(normalGPA/normalCount));
-
-
+        System.out.println(
+                "Non-Dropout Student Average 1st Semester Grade: "
+                        + df.format(
+                        nonDropoutGrade / nonDropoutCount
+                )
+        );
     }
-
 }
