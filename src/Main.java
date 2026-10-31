@@ -4,6 +4,7 @@ import statistics.Statistics;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import preprocessing.FeatureSelector;
 
 public class Main {
 
@@ -178,5 +179,42 @@ public class Main {
         System.out.println("==============================================");
         System.out.println(" STATISTICAL ANALYSIS COMPLETED");
         System.out.println("==============================================");
+        // =====================================================
+// FEATURE SELECTION TEST
+// =====================================================
+
+        System.out.println();
+        System.out.println("FEATURE SELECTION");
+        System.out.println("-----------------");
+
+        FeatureSelector featureSelector = new FeatureSelector();
+
+        double[][] features =
+                featureSelector.selectAllFeatures(students);
+
+        String[] featureNames =
+                featureSelector.getFeatureNames();
+
+        System.out.println(
+                "Total Students: " + features.length
+        );
+
+        System.out.println(
+                "Selected Features: " + featureNames.length
+        );
+
+        System.out.println();
+        System.out.println("FIRST STUDENT FEATURE VALUES");
+        System.out.println("----------------------------");
+
+        if (features.length > 0) {
+
+            for (int i = 0; i < featureNames.length; i++) {
+
+                System.out.println(
+                        featureNames[i] + ": " + features[0][i]
+                );
+            }
+        }
     }
 }
