@@ -5,6 +5,7 @@ import statistics.Statistics;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import preprocessing.FeatureSelector;
+import preprocessing.DataSplitter;
 
 public class Main {
 
@@ -216,5 +217,82 @@ public class Main {
                 );
             }
         }
+        // =====================================================
+// DATA SPLITTING
+// =====================================================
+
+        System.out.println();
+        System.out.println("DATA SPLITTING");
+        System.out.println("-------------------");
+
+        DataSplitter splitter =
+                new DataSplitter(students, 0.80, 42);
+
+        ArrayList<Student> trainingData =
+                splitter.getTrainingData();
+
+        ArrayList<Student> testingData =
+                splitter.getTestingData();
+
+        System.out.println(
+                "Training Students: " + trainingData.size()
+        );
+
+        System.out.println(
+                "Testing Students : " + testingData.size()
+        );
+
+        System.out.println(
+                "Total Students   : "
+                        + (trainingData.size() + testingData.size())
+        );
+
+
+// =====================================================
+// TRAINING CLASS DISTRIBUTION
+// =====================================================
+
+        System.out.println();
+        System.out.println("TRAINING CLASS DISTRIBUTION");
+        System.out.println("---------------------------");
+
+        System.out.println(
+                "Dropout  : " +
+                        statistics.countDropoutStudents(trainingData)
+        );
+
+        System.out.println(
+                "Enrolled : " +
+                        statistics.countEnrolledStudents(trainingData)
+        );
+
+        System.out.println(
+                "Graduate : " +
+                        statistics.countGraduateStudents(trainingData)
+        );
+
+
+// =====================================================
+// TESTING CLASS DISTRIBUTION
+// =====================================================
+
+        System.out.println();
+        System.out.println("TESTING CLASS DISTRIBUTION");
+        System.out.println("--------------------------");
+
+        System.out.println(
+                "Dropout  : " +
+                        statistics.countDropoutStudents(testingData)
+        );
+
+        System.out.println(
+                "Enrolled : " +
+                        statistics.countEnrolledStudents(testingData)
+        );
+
+        System.out.println(
+                "Graduate : " +
+                        statistics.countGraduateStudents(testingData)
+        );
     }
 }
