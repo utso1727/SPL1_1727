@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import preprocessing.FeatureSelector;
 import preprocessing.DataSplitter;
+import preprocessing.Encoder;
 
 public class Main {
 
@@ -293,6 +294,155 @@ public class Main {
         System.out.println(
                 "Graduate : " +
                         statistics.countGraduateStudents(testingData)
+        );
+
+        // =====================================================
+// CATEGORICAL ENCODING
+// =====================================================
+
+        System.out.println();
+        System.out.println("CATEGORICAL ENCODING");
+        System.out.println("--------------------");
+
+// Create FeatureSelector
+// Reuse your existing featureSelector variable
+
+// Extract features from training data
+        double[][] trainingFeatures =
+                featureSelector.selectAllFeatures(trainingData);
+
+// Extract features from testing data
+        double[][] testingFeatures =
+                featureSelector.selectAllFeatures(testingData);
+
+
+// =====================================================
+// CREATE AND FIT ENCODER
+// =====================================================
+
+        Encoder encoder = new Encoder();
+
+// Fit only on training data
+        encoder.fit(trainingFeatures);
+
+
+// =====================================================
+// TRANSFORM TRAINING AND TESTING FEATURES
+// =====================================================
+
+        double[][] encodedTraining =
+                encoder.transform(trainingFeatures);
+
+        double[][] encodedTesting =
+                encoder.transform(testingFeatures);
+
+
+// =====================================================
+// PRINT ENCODING INFORMATION
+// =====================================================
+
+        System.out.println(
+                "Original Features: "
+                        + FeatureSelector.FEATURE_COUNT
+        );
+
+        System.out.println(
+                "Course Categories: "
+                        + encoder.getCourseCategoryCount()
+        );
+
+        System.out.println(
+                "Encoded Features: "
+                        + encoder.getEncodedFeatureCount()
+        );
+
+        System.out.println(
+                "Training Rows: "
+                        + encodedTraining.length
+        );
+
+        System.out.println(
+                "Testing Rows: "
+                        + encodedTesting.length
+        );
+
+        System.out.println(
+                "Training Feature Columns: "
+                        + encodedTraining[0].length
+        );
+
+        System.out.println(
+                "Testing Feature Columns: "
+                        + encodedTesting[0].length
+        );
+
+
+// =====================================================
+// DISPLAY COURSE CATEGORIES
+// =====================================================
+
+        System.out.println();
+        System.out.println("COURSE CATEGORIES");
+        System.out.println("-----------------");
+
+        System.out.println(
+                encoder.getCourseCategories()
+        );
+
+
+// =====================================================
+// VERIFY FIRST TRAINING STUDENT
+// =====================================================
+
+        System.out.println();
+        System.out.println("FIRST TRAINING STUDENT");
+        System.out.println("----------------------");
+
+        System.out.println(
+                "Original Course Code: "
+                        + trainingFeatures[0][1]
+        );
+
+        System.out.println(
+                "Original Feature Count: "
+                        + trainingFeatures[0].length
+        );
+
+        System.out.println(
+                "Encoded Feature Count: "
+                        + encodedTraining[0].length
+        );
+
+
+// =====================================================
+// VERIFY ONE-HOT ENCODING
+// =====================================================
+
+        int courseCount = encoder.getCourseCategoryCount();
+
+        int activeCourseColumns = 0;
+
+        for (int i = 1; i <= courseCount; i++) {
+
+            if (encodedTraining[0][i] == 1.0) {
+                activeCourseColumns++;
+            }
+        }
+
+        System.out.println(
+                "Active Course Columns: "
+                        + activeCourseColumns
+        );
+
+        if (activeCourseColumns != 1) {
+
+            throw new IllegalStateException(
+                    "One-hot encoding validation failed."
+            );
+        }
+
+        System.out.println(
+                "One-Hot Encoding Validation: PASSED"
         );
     }
 }
