@@ -8,8 +8,28 @@ import preprocessing.FeatureSelector;
 import preprocessing.DataSplitter;
 import preprocessing.Encoder;
 import preprocessing.StandardScaler;
+import ml.LogisticRegression;
 
 public class Main {
+    private static int encodeTarget(String target) {
+
+        switch (target) {
+
+            case "Dropout":
+                return 0;
+
+            case "Enrolled":
+                return 1;
+
+            case "Graduate":
+                return 2;
+
+            default:
+                throw new IllegalArgumentException(
+                        "Unknown target: " + target
+                );
+        }
+    }
 
     public static void main(String[] args) {
 
@@ -610,6 +630,117 @@ public class Main {
 
         System.out.println(
                 "Standardization Validation: PASSED"
+        );
+
+        // =====================================================
+// PREPARE TRAINING TARGET LABELS
+// =====================================================
+
+        System.out.println();
+        System.out.println("TARGET ENCODING");
+        System.out.println("--------------------");
+
+        int[] trainingLabels = new int[trainingData.size()];
+
+        for (int i = 0; i < trainingData.size(); i++) {
+
+            trainingLabels[i] =
+                    encodeTarget(trainingData.get(i).getTarget());
+        }
+
+        System.out.println(
+                "Training Labels: " + trainingLabels.length
+        );
+
+        System.out.println(
+                "First Training Label: " + trainingLabels[0]
+        );
+
+
+// =====================================================
+// CREATE LOGISTIC REGRESSION MODEL
+// =====================================================
+
+        LogisticRegression model = new LogisticRegression(
+                scaledTraining[0].length,
+                3,
+                0.1,
+                500
+        );
+
+
+// =====================================================
+// TRAIN THE MODEL
+// =====================================================
+
+        model.fit(scaledTraining, trainingLabels);
+
+
+// =====================================================
+// TEST PROBABILITY PREDICTION
+// =====================================================
+
+        System.out.println();
+        System.out.println("TESTING FIRST STUDENT");
+        System.out.println("---------------------");
+
+        double[] probabilities =
+                model.predictProba(scaledTesting[0]);
+
+        int predictedClass =
+                model.predict(scaledTesting[0]);
+
+        String[] classNames = {
+                "Dropout",
+                "Enrolled",
+                "Graduate"
+        };
+
+        System.out.println(
+                "Dropout Probability: "
+                        + df.format(probabilities[0] * 100) + "%"
+        );
+
+        System.out.println(
+                "Enrolled Probability: "
+                        + df.format(probabilities[1] * 100) + "%"
+        );
+
+        System.out.println(
+                "Graduate Probability: "
+                        + df.format(probabilities[2] * 100) + "%"
+        );
+
+        System.out.println(
+                "Predicted Outcome: "
+                        + classNames[predictedClass]
+        );
+
+
+// =====================================================
+// VERIFY PROBABILITIES
+// =====================================================
+
+        double probabilitySum = 0;
+
+        for (double probability : probabilities) {
+
+            probabilitySum += probability;
+        }
+
+        System.out.println(
+                "Probability Sum: " + probabilitySum
+        );
+
+        if (Math.abs(probabilitySum - 1.0) > 1e-9) {
+
+            throw new IllegalStateException(
+                    "Probability validation failed."
+            );
+        }
+
+        System.out.println(
+                "Logistic Regression Prediction: PASSED"
         );
     }
 }
