@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import preprocessing.FeatureSelector;
 import preprocessing.DataSplitter;
 import preprocessing.Encoder;
+import preprocessing.StandardScaler;
 
 public class Main {
 
@@ -443,6 +444,172 @@ public class Main {
 
         System.out.println(
                 "One-Hot Encoding Validation: PASSED"
+        );
+        // =====================================================
+// FEATURE STANDARDIZATION
+// =====================================================
+
+        System.out.println();
+        System.out.println("FEATURE STANDARDIZATION");
+        System.out.println("-----------------------");
+
+// Create StandardScaler
+        StandardScaler scaler = new StandardScaler();
+
+
+// =====================================================
+// FIT SCALER USING TRAINING DATA ONLY
+// =====================================================
+
+        scaler.fit(encodedTraining);
+
+
+// =====================================================
+// TRANSFORM TRAINING AND TESTING DATA
+// =====================================================
+
+        double[][] scaledTraining =
+                scaler.transform(encodedTraining);
+
+        double[][] scaledTesting =
+                scaler.transform(encodedTesting);
+
+
+// =====================================================
+// PRINT DATASET INFORMATION
+// =====================================================
+
+        System.out.println(
+                "Training Rows: " + scaledTraining.length
+        );
+
+        System.out.println(
+                "Testing Rows: " + scaledTesting.length
+        );
+
+        System.out.println(
+                "Training Columns: " + scaledTraining[0].length
+        );
+
+        System.out.println(
+                "Testing Columns: " + scaledTesting[0].length
+        );
+
+
+// =====================================================
+// COMPARE ORIGINAL AND STANDARDIZED VALUES
+// =====================================================
+
+        System.out.println();
+        System.out.println("FIRST TRAINING STUDENT");
+        System.out.println("----------------------");
+
+        System.out.println(
+                "Original Admission Grade: "
+                        + encodedTraining[0][20]
+        );
+
+        System.out.println(
+                "Scaled Admission Grade: "
+                        + df.format(scaledTraining[0][20])
+        );
+
+        System.out.println(
+                "Original Age: "
+                        + encodedTraining[0][24]
+        );
+
+        System.out.println(
+                "Scaled Age: "
+                        + df.format(scaledTraining[0][24])
+        );
+
+
+// =====================================================
+// DISPLAY TRAINING STATISTICS
+// =====================================================
+
+        System.out.println();
+        System.out.println("TRAINING SCALER PARAMETERS");
+        System.out.println("--------------------------");
+
+        System.out.println(
+                "Admission Grade Mean: "
+                        + df.format(scaler.getMean(20))
+        );
+
+        System.out.println(
+                "Admission Grade Std Dev: "
+                        + df.format(scaler.getStandardDeviation(20))
+        );
+
+        System.out.println(
+                "Age Mean: "
+                        + df.format(scaler.getMean(24))
+        );
+
+        System.out.println(
+                "Age Std Dev: "
+                        + df.format(scaler.getStandardDeviation(24))
+        );
+
+
+// =====================================================
+// VERIFY BINARY FEATURES REMAIN UNCHANGED
+// =====================================================
+
+        boolean binaryUnchanged = true;
+
+        int[] binaryColumns = {18, 21, 22, 23};
+
+        for (int i = 0; i < encodedTraining.length; i++) {
+
+            for (int column : binaryColumns) {
+
+                if (encodedTraining[i][column]
+                        != scaledTraining[i][column]) {
+
+                    binaryUnchanged = false;
+                }
+            }
+        }
+
+        System.out.println();
+        System.out.println(
+                "Binary Features Unchanged: "
+                        + binaryUnchanged
+        );
+
+
+// =====================================================
+// VERIFY SCALING
+// =====================================================
+
+        if (scaledTraining.length != 3539 ||
+                scaledTesting.length != 885) {
+
+            throw new IllegalStateException(
+                    "Data size validation failed."
+            );
+        }
+
+        if (scaledTraining[0].length != 31 ||
+                scaledTesting[0].length != 31) {
+
+            throw new IllegalStateException(
+                    "Feature count validation failed."
+            );
+        }
+
+        if (!binaryUnchanged) {
+
+            throw new IllegalStateException(
+                    "Binary feature validation failed."
+            );
+        }
+
+        System.out.println(
+                "Standardization Validation: PASSED"
         );
     }
 }
