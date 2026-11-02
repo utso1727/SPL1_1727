@@ -9,6 +9,7 @@ import preprocessing.DataSplitter;
 import preprocessing.Encoder;
 import preprocessing.StandardScaler;
 import ml.LogisticRegression;
+import ml.ModelEvaluator;
 
 public class Main {
     private static int encodeTarget(String target) {
@@ -741,6 +742,66 @@ public class Main {
 
         System.out.println(
                 "Logistic Regression Prediction: PASSED"
+        );
+        // =====================================================
+// PREPARE TESTING TARGET LABELS
+// =====================================================
+
+        System.out.println();
+        System.out.println("TESTING TARGET ENCODING");
+        System.out.println("-----------------------");
+
+        int[] testingLabels = new int[testingData.size()];
+
+        for (int i = 0; i < testingData.size(); i++) {
+
+            testingLabels[i] =
+                    encodeTarget(testingData.get(i).getTarget());
+        }
+
+        System.out.println(
+                "Testing Labels: " + testingLabels.length
+        );
+
+        // =====================================================
+// MODEL EVALUATION - ACCURACY
+// =====================================================
+
+        System.out.println();
+        System.out.println("MODEL EVALUATION");
+        System.out.println("-----------------------");
+
+// Create evaluator
+        ModelEvaluator evaluator = new ModelEvaluator();
+
+// Calculate accuracy using testing data
+        double accuracy = evaluator.calculateAccuracy(
+                model,
+                scaledTesting,
+                testingLabels
+        );
+
+// Display result
+        System.out.println(
+                "Total Testing Students: " + scaledTesting.length
+        );
+
+        System.out.printf(
+                "Testing Accuracy: %.2f%%%n",
+                accuracy * 100
+        );
+
+// Validate accuracy range
+        if (!Double.isFinite(accuracy) ||
+                accuracy < 0 || accuracy > 1) {
+
+            throw new IllegalStateException(
+                    "Invalid model accuracy."
+            );
+        }
+
+        System.out.println(
+                "Accuracy Validation: PASSED"
         );
     }
 }
