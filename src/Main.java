@@ -803,5 +803,101 @@ public class Main {
         System.out.println(
                 "Accuracy Validation: PASSED"
         );
+        // =====================================================
+// CONFUSION MATRIX
+// =====================================================
+
+        System.out.println();
+        System.out.println("CONFUSION MATRIX");
+        System.out.println("----------------------------");
+
+// Calculate confusion matrix
+        int[][] confusionMatrix =
+                evaluator.calculateConfusionMatrix(
+                        model,
+                        scaledTesting,
+                        testingLabels
+                );
+
+
+// =====================================================
+// DISPLAY CONFUSION MATRIX
+// =====================================================
+
+        System.out.println(
+                "Rows = Actual, Columns = Predicted"
+        );
+
+        System.out.printf(
+                "%-12s %10s %10s %10s%n",
+                "",
+                "Dropout",
+                "Enrolled",
+                "Graduate"
+        );
+
+        for (int i = 0; i < 3; i++) {
+
+            System.out.printf(
+                    "%-12s",
+                    classNames[i]
+            );
+
+            for (int j = 0; j < 3; j++) {
+
+                System.out.printf(
+                        "%10d",
+                        confusionMatrix[i][j]
+                );
+            }
+
+            System.out.println();
+        }
+
+
+// =====================================================
+// CONFUSION MATRIX VALIDATION
+// =====================================================
+
+        int matrixTotal = 0;
+        int correctFromMatrix = 0;
+
+        for (int i = 0; i < 3; i++) {
+
+            for (int j = 0; j < 3; j++) {
+
+                matrixTotal += confusionMatrix[i][j];
+
+                if (i == j) {
+                    correctFromMatrix += confusionMatrix[i][j];
+                }
+            }
+        }
+
+        System.out.println();
+        System.out.println(
+                "Confusion Matrix Total: " + matrixTotal
+        );
+
+        if (matrixTotal != testingData.size()) {
+
+            throw new IllegalStateException(
+                    "Confusion matrix total does not match testing data."
+            );
+        }
+
+        double matrixAccuracy =
+                (double) correctFromMatrix / matrixTotal;
+
+        if (Math.abs(matrixAccuracy - accuracy) > 1e-9) {
+
+            throw new IllegalStateException(
+                    "Confusion matrix accuracy does not match model accuracy."
+            );
+        }
+
+        System.out.println(
+                "Confusion Matrix Validation: PASSED"
+        );
     }
 }
