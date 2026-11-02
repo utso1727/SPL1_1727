@@ -899,5 +899,69 @@ public class Main {
         System.out.println(
                 "Confusion Matrix Validation: PASSED"
         );
+
+        // =====================================================
+// PRECISION CALCULATION
+// =====================================================
+
+        System.out.println();
+        System.out.println("PRECISION CALCULATION");
+        System.out.println("---------------------");
+
+// Calculate precision for all three classes
+        double dropoutPrecision =
+                evaluator.calculatePrecision(confusionMatrix, 0);
+
+        double enrolledPrecision =
+                evaluator.calculatePrecision(confusionMatrix, 1);
+
+        double graduatePrecision =
+                evaluator.calculatePrecision(confusionMatrix, 2);
+
+
+// =====================================================
+// DISPLAY PRECISION RESULTS
+// =====================================================
+
+        System.out.printf(
+                "Dropout Precision : %.2f%%%n",
+                dropoutPrecision * 100
+        );
+
+        System.out.printf(
+                "Enrolled Precision: %.2f%%%n",
+                enrolledPrecision * 100
+        );
+
+        System.out.printf(
+                "Graduate Precision: %.2f%%%n",
+                graduatePrecision * 100
+        );
+
+
+// =====================================================
+// VALIDATE PRECISION VALUES
+// =====================================================
+
+        double[] precisionValues = {
+                dropoutPrecision,
+                enrolledPrecision,
+                graduatePrecision
+        };
+
+        for (double precision : precisionValues) {
+
+            if (!Double.isFinite(precision) ||
+                    precision < 0 || precision > 1) {
+
+                throw new IllegalStateException(
+                        "Invalid precision value."
+                );
+            }
+        }
+
+        System.out.println(
+                "Precision Validation: PASSED"
+        );
     }
 }

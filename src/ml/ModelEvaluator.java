@@ -111,4 +111,69 @@ public class ModelEvaluator {
 
         return confusionMatrix;
     }
+    // =====================================================
+// CALCULATE PRECISION FOR A TARGET CLASS
+// =====================================================
+
+    public double calculatePrecision(
+            int[][] confusionMatrix,
+            int classIndex
+    ) {
+
+        if (confusionMatrix == null ||
+                confusionMatrix.length != 3) {
+
+            throw new IllegalArgumentException(
+                    "Expected a 3x3 confusion matrix."
+            );
+        }
+
+        if (classIndex < 0 || classIndex >= 3) {
+
+            throw new IllegalArgumentException(
+                    "Invalid class index."
+            );
+        }
+
+        // Validate confusion matrix
+        for (int i = 0; i < 3; i++) {
+
+            if (confusionMatrix[i] == null ||
+                    confusionMatrix[i].length != 3) {
+
+                throw new IllegalArgumentException(
+                        "Invalid confusion matrix dimensions."
+                );
+            }
+
+            for (int j = 0; j < 3; j++) {
+
+                if (confusionMatrix[i][j] < 0) {
+
+                    throw new IllegalArgumentException(
+                            "Confusion matrix cannot contain negative values."
+                    );
+                }
+            }
+        }
+
+        // Correct predictions for this class
+        int truePositive =
+                confusionMatrix[classIndex][classIndex];
+
+        // Total predictions made for this class
+        int totalPredicted = 0;
+
+        for (int i = 0; i < 3; i++) {
+
+            totalPredicted += confusionMatrix[i][classIndex];
+        }
+
+        // Avoid division by zero
+        if (totalPredicted == 0) {
+            return 0.0;
+        }
+
+        return (double) truePositive / totalPredicted;
+    }
 }
