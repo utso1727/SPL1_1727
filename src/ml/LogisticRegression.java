@@ -304,6 +304,52 @@ public class LogisticRegression {
         return predictedClass;
     }
 
+    // =====================================================
+// RETURN A LEARNED WEIGHT
+// =====================================================
+
+    public double getWeight(int classIndex, int featureIndex) {
+
+        if (!trained) {
+            throw new IllegalStateException(
+                    "Model must be trained first."
+            );
+        }
+
+        if (classIndex < 0 || classIndex >= classCount ||
+                featureIndex < 0 || featureIndex >= featureCount) {
+
+            throw new IllegalArgumentException(
+                    "Invalid weight index."
+            );
+        }
+
+        return weights[classIndex][featureIndex];
+    }
+
+
+// =====================================================
+// RETURN A LEARNED BIAS
+// =====================================================
+
+    public double getBias(int classIndex) {
+
+        if (!trained) {
+            throw new IllegalStateException(
+                    "Model must be trained first."
+            );
+        }
+
+        if (classIndex < 0 || classIndex >= classCount) {
+
+            throw new IllegalArgumentException(
+                    "Invalid class index."
+            );
+        }
+
+        return biases[classIndex];
+    }
+
 
     // =====================================================
     // VALIDATE TRAINING DATA
