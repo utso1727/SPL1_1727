@@ -1187,5 +1187,129 @@ public class Main {
         System.out.println(
                 "Macro-Average Validation: PASSED"
         );
+
+
+        // =====================================================
+// SAMPLE TESTING STUDENT PREDICTIONS
+// =====================================================
+
+        System.out.println();
+        System.out.println("========================================");
+        System.out.println("SAMPLE TESTING STUDENT PREDICTIONS");
+        System.out.println("========================================");
+
+
+// Number of testing students to display
+        int sampleCount = Math.min(5, scaledTesting.length);
+
+
+// =====================================================
+// PREDICT INDIVIDUAL TESTING STUDENTS
+// =====================================================
+
+        for (int i = 0; i < sampleCount; i++) {
+
+            // Get features for one testing student
+            double[] studentFeatures = scaledTesting[i];
+
+            // Calculate class probabilities
+            double[] studentProbabilities =
+                    model.predictProba(studentFeatures);
+
+            // Predict outcome
+            int samplePredictedClass =
+                    model.predict(studentFeatures);
+
+            // Get actual outcome
+            int actualClass = testingLabels[i];
+
+
+            // =====================================================
+            // DISPLAY STUDENT INFORMATION
+            // =====================================================
+
+            System.out.println();
+            System.out.println("Testing Student " + (i + 1));
+            System.out.println("----------------------------------------");
+
+            System.out.println(
+                    "Actual Outcome    : " + classNames[actualClass]
+            );
+
+            System.out.println(
+                    "Predicted Outcome : " + classNames[samplePredictedClass]
+            );
+
+
+            // =====================================================
+            // DISPLAY CLASS PROBABILITIES
+            // =====================================================
+
+            System.out.println();
+
+            System.out.printf(
+                    "Dropout Probability : %.2f%%%n",
+                    studentProbabilities[0] * 100
+            );
+
+            System.out.printf(
+                    "Enrolled Probability: %.2f%%%n",
+                    studentProbabilities[1] * 100
+            );
+
+            System.out.printf(
+                    "Graduate Probability: %.2f%%%n",
+                    studentProbabilities[2] * 100
+            );
+
+
+            // =====================================================
+            // CHECK PREDICTION
+            // =====================================================
+
+            boolean correct = (actualClass == samplePredictedClass);
+
+            System.out.println();
+
+            System.out.println(
+                    "Prediction Result: "
+                            + (correct ? "CORRECT" : "INCORRECT")
+            );
+
+
+            // =====================================================
+            // VALIDATE PROBABILITIES
+            // =====================================================
+
+            double sum = 0;
+
+            for (double probability : studentProbabilities) {
+
+                if (!Double.isFinite(probability)
+                        || probability < 0
+                        || probability > 1) {
+
+                    throw new IllegalStateException(
+                            "Invalid probability for testing student "
+                                    + (i + 1)
+                    );
+                }
+
+                sum += probability;
+            }
+
+            if (Math.abs(sum - 1.0) > 1e-9) {
+
+                throw new IllegalStateException(
+                        "Probability validation failed for student "
+                                + (i + 1)
+                );
+            }
+        }
+
+        System.out.println();
+        System.out.println("========================================");
+        System.out.println("SAMPLE PREDICTIONS COMPLETED");
+        System.out.println("========================================");
     }
 }
