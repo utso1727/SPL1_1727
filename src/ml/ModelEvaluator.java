@@ -176,4 +176,72 @@ public class ModelEvaluator {
 
         return (double) truePositive / totalPredicted;
     }
+    // =====================================================
+// CALCULATE RECALL FOR A TARGET CLASS
+// =====================================================
+
+    public double calculateRecall(
+            int[][] confusionMatrix,
+            int classIndex
+    ) {
+
+        // Validate confusion matrix
+        if (confusionMatrix == null ||
+                confusionMatrix.length != 3) {
+
+            throw new IllegalArgumentException(
+                    "Expected a 3x3 confusion matrix."
+            );
+        }
+
+        // Validate class index
+        if (classIndex < 0 || classIndex >= 3) {
+
+            throw new IllegalArgumentException(
+                    "Invalid class index."
+            );
+        }
+
+        // Validate matrix dimensions and values
+        for (int i = 0; i < 3; i++) {
+
+            if (confusionMatrix[i] == null ||
+                    confusionMatrix[i].length != 3) {
+
+                throw new IllegalArgumentException(
+                        "Invalid confusion matrix dimensions."
+                );
+            }
+
+            for (int j = 0; j < 3; j++) {
+
+                if (confusionMatrix[i][j] < 0) {
+
+                    throw new IllegalArgumentException(
+                            "Confusion matrix cannot contain negative values."
+                    );
+                }
+            }
+        }
+
+        // Correct predictions for this class
+        int truePositive =
+                confusionMatrix[classIndex][classIndex];
+
+        // Total actual students belonging to this class
+        int totalActual = 0;
+
+        for (int j = 0; j < 3; j++) {
+
+            totalActual += confusionMatrix[classIndex][j];
+        }
+
+        // Avoid division by zero
+        if (totalActual == 0) {
+            return 0.0;
+        }
+
+        // Calculate recall
+        return (double) truePositive / totalActual;
+    }
 }

@@ -963,5 +963,70 @@ public class Main {
         System.out.println(
                 "Precision Validation: PASSED"
         );
+
+        // =====================================================
+// RECALL CALCULATION
+// =====================================================
+
+        System.out.println();
+        System.out.println("RECALL CALCULATION");
+        System.out.println("------------------");
+
+// Calculate recall for all three classes
+
+        double dropoutRecall =
+                evaluator.calculateRecall(confusionMatrix, 0);
+
+        double enrolledRecall =
+                evaluator.calculateRecall(confusionMatrix, 1);
+
+        double graduateRecall =
+                evaluator.calculateRecall(confusionMatrix, 2);
+
+
+// =====================================================
+// DISPLAY RECALL RESULTS
+// =====================================================
+
+        System.out.printf(
+                "Dropout Recall : %.2f%%%n",
+                dropoutRecall * 100
+        );
+
+        System.out.printf(
+                "Enrolled Recall: %.2f%%%n",
+                enrolledRecall * 100
+        );
+
+        System.out.printf(
+                "Graduate Recall: %.2f%%%n",
+                graduateRecall * 100
+        );
+
+
+// =====================================================
+// VALIDATE RECALL VALUES
+// =====================================================
+
+        double[] recallValues = {
+                dropoutRecall,
+                enrolledRecall,
+                graduateRecall
+        };
+
+        for (double recall : recallValues) {
+
+            if (!Double.isFinite(recall) ||
+                    recall < 0 || recall > 1) {
+
+                throw new IllegalStateException(
+                        "Invalid recall value."
+                );
+            }
+        }
+
+        System.out.println(
+                "Recall Validation: PASSED"
+        );
     }
 }
