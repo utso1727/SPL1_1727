@@ -1028,5 +1028,81 @@ public class Main {
         System.out.println(
                 "Recall Validation: PASSED"
         );
+        // =====================================================
+// F1-SCORE CALCULATION
+// =====================================================
+
+        System.out.println();
+        System.out.println("F1-SCORE CALCULATION");
+        System.out.println("--------------------");
+
+
+// =====================================================
+// CALCULATE F1-SCORE FOR EACH CLASS
+// =====================================================
+
+        double dropoutF1 =
+                evaluator.calculateF1Score(
+                        dropoutPrecision,
+                        dropoutRecall
+                );
+
+        double enrolledF1 =
+                evaluator.calculateF1Score(
+                        enrolledPrecision,
+                        enrolledRecall
+                );
+
+        double graduateF1 =
+                evaluator.calculateF1Score(
+                        graduatePrecision,
+                        graduateRecall
+                );
+
+
+// =====================================================
+// DISPLAY F1-SCORE RESULTS
+// =====================================================
+
+        System.out.printf(
+                "Dropout F1-Score : %.2f%%%n",
+                dropoutF1 * 100
+        );
+
+        System.out.printf(
+                "Enrolled F1-Score: %.2f%%%n",
+                enrolledF1 * 100
+        );
+
+        System.out.printf(
+                "Graduate F1-Score: %.2f%%%n",
+                graduateF1 * 100
+        );
+
+
+// =====================================================
+// VALIDATE F1-SCORE VALUES
+// =====================================================
+
+        double[] f1Values = {
+                dropoutF1,
+                enrolledF1,
+                graduateF1
+        };
+
+        for (double f1 : f1Values) {
+
+            if (!Double.isFinite(f1) ||
+                    f1 < 0 || f1 > 1) {
+
+                throw new IllegalStateException(
+                        "Invalid F1-score value."
+                );
+            }
+        }
+
+        System.out.println(
+                "F1-Score Validation: PASSED"
+        );
     }
 }

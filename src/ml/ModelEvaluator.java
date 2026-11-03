@@ -244,4 +244,43 @@ public class ModelEvaluator {
         // Calculate recall
         return (double) truePositive / totalActual;
     }
+    // =====================================================
+// CALCULATE F1-SCORE
+// =====================================================
+
+    public double calculateF1Score(
+            double precision,
+            double recall
+    ) {
+
+        // Validate precision
+        if (!Double.isFinite(precision) ||
+                precision < 0 || precision > 1) {
+
+            throw new IllegalArgumentException(
+                    "Precision must be between 0 and 1."
+            );
+        }
+
+        // Validate recall
+        if (!Double.isFinite(recall) ||
+                recall < 0 || recall > 1) {
+
+            throw new IllegalArgumentException(
+                    "Recall must be between 0 and 1."
+            );
+        }
+
+        // Avoid division by zero
+        if (precision + recall == 0) {
+            return 0.0;
+        }
+
+        // Calculate F1-score
+        double f1Score =
+                (2 * precision * recall)
+                        / (precision + recall);
+
+        return f1Score;
+    }
 }
