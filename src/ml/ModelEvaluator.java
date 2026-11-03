@@ -283,4 +283,41 @@ public class ModelEvaluator {
 
         return f1Score;
     }
+    // =====================================================
+// CALCULATE MACRO-AVERAGE
+// =====================================================
+
+    public double calculateMacroAverage(
+            double[] classScores
+    ) {
+
+        // Validate input
+        if (classScores == null ||
+                classScores.length == 0) {
+
+            throw new IllegalArgumentException(
+                    "Class scores cannot be empty."
+            );
+        }
+
+        double sum = 0;
+
+        // Process each class score
+        for (double score : classScores) {
+
+            if (!Double.isFinite(score) ||
+                    score < 0 || score > 1) {
+
+                throw new IllegalArgumentException(
+                        "Invalid class score."
+                );
+            }
+
+            sum += score;
+        }
+
+        // Calculate macro-average
+        return sum / classScores.length;
+    }
+
 }

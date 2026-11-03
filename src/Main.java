@@ -1104,5 +1104,88 @@ public class Main {
         System.out.println(
                 "F1-Score Validation: PASSED"
         );
+        // =====================================================
+// MACRO-AVERAGE EVALUATION
+// =====================================================
+
+        System.out.println();
+        System.out.println("MACRO-AVERAGE EVALUATION");
+        System.out.println("------------------------");
+
+
+// =====================================================
+// CALCULATE MACRO PRECISION
+// =====================================================
+
+        double macroPrecision =
+                evaluator.calculateMacroAverage(
+                        precisionValues
+                );
+
+
+// =====================================================
+// CALCULATE MACRO RECALL
+// =====================================================
+
+        double macroRecall =
+                evaluator.calculateMacroAverage(
+                        recallValues
+                );
+
+
+// =====================================================
+// CALCULATE MACRO F1-SCORE
+// =====================================================
+
+        double macroF1 =
+                evaluator.calculateMacroAverage(
+                        f1Values
+                );
+
+
+// =====================================================
+// DISPLAY MACRO-AVERAGE RESULTS
+// =====================================================
+
+        System.out.printf(
+                "Macro Precision: %.2f%%%n",
+                macroPrecision * 100
+        );
+
+        System.out.printf(
+                "Macro Recall   : %.2f%%%n",
+                macroRecall * 100
+        );
+
+        System.out.printf(
+                "Macro F1-Score : %.2f%%%n",
+                macroF1 * 100
+        );
+
+
+// =====================================================
+// VALIDATE MACRO-AVERAGE RESULTS
+// =====================================================
+
+        double[] macroValues = {
+                macroPrecision,
+                macroRecall,
+                macroF1
+        };
+
+        for (double value : macroValues) {
+
+            if (!Double.isFinite(value) ||
+                    value < 0 || value > 1) {
+
+                throw new IllegalStateException(
+                        "Invalid macro-average value."
+                );
+            }
+        }
+
+        System.out.println(
+                "Macro-Average Validation: PASSED"
+        );
     }
 }
